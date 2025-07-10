@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result login(String username, String password) {
+    public Result<String> login(String username, String password) {
         /*
        1, 查询用户是否存在
        2, 密码匹配
@@ -40,6 +40,6 @@ public class UserServiceImpl implements UserService {
         if (!Md5Util.checkPassword(password, userMapper.findPasswordByUserName(username))) {
             return Result.error("用户名或密码错误！");
         }
-        return Result.success();
+        return Result.success("jwt 令牌");
     }
 }
