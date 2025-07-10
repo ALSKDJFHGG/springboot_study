@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password) {
-        if (userService.register(username, password)) {
-            return Result.success();
-        }
-        return Result.error("用户已存在！");
+        return userService.register(username, password);
+    }
+
+    @PostMapping("/login")
+    public Result login(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password) {
+        return userService.login(username, password);
     }
 }

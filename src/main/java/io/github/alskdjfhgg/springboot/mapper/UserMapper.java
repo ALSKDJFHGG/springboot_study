@@ -13,4 +13,7 @@ public interface UserMapper {
     @Insert("insert into user(username, password, create_time, update_time) " +
             "values (#{username}, #{password}, now(), now())")
     void add(String username, String password);
+
+    @Select("select password from user where username=#{username}")
+    String findPasswordByUserName(String username);
 }
