@@ -4,9 +4,13 @@ import io.github.alskdjfhgg.springboot.mapper.UserMapper;
 import io.github.alskdjfhgg.springboot.pojo.Result;
 import io.github.alskdjfhgg.springboot.pojo.User;
 import io.github.alskdjfhgg.springboot.service.UserService;
+import io.github.alskdjfhgg.springboot.utils.JwtUtil;
 import io.github.alskdjfhgg.springboot.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,6 +44,9 @@ public class UserServiceImpl implements UserService {
         if (!Md5Util.checkPassword(password, userMapper.findPasswordByUserName(username))) {
             return Result.error("用户名或密码错误！");
         }
-        return Result.success("jwt 令牌");
+        Map<String, Object> user = new HashMap<>();
+        user.put("id", userMapper.findByUserName(username).getId());
+        user.put("username", username);
+        return Result.success(JwtUtil.JwtGen(user));
     }
 }
