@@ -6,6 +6,7 @@ import io.github.alskdjfhgg.springboot.pojo.User;
 import io.github.alskdjfhgg.springboot.service.UserService;
 import io.github.alskdjfhgg.springboot.utils.JwtUtil;
 import io.github.alskdjfhgg.springboot.utils.Md5Util;
+import io.github.alskdjfhgg.springboot.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public Result register(String username, String password) {
         // 1, 查询用户
@@ -48,5 +50,18 @@ public class UserServiceImpl implements UserService {
         user.put("id", userMapper.findByUserName(username).getId());
         user.put("username", username);
         return Result.success(JwtUtil.JwtGen(user));
+    }
+
+    @Override
+    public Result<User> userInfo(String token) {
+        /*
+        1, 根据token获取用户名称
+        2，用获取的名称查找用户信息
+         */
+//        Map<String, Object> objectMap = JwtUtil.VailJWT(token);
+        Map<String, Object> objectMap = JwtUtil.VailJWT(ThreadLocalUtil.get());
+        String username = (String) objectMap.get("username");
+        User user = userMapper.findByUserName(username);
+        return Result.success(user);
     }
 }

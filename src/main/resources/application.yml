@@ -3,6 +3,9 @@ spring:
     name: springboot
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/big_event
+    url: jdbc:mysql://127.0.0.1:3306/bit_event
     username: root
-    password: 1234
+    password: root
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
